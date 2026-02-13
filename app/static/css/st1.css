@@ -1,0 +1,133 @@
+body {
+    height: 100vh;
+    margin: 0;
+    background-color: #FFE6C9;
+}
+
+.ms-big {
+    margin-left: 5rem;
+}
+
+.container {
+    border-radius: 5x;
+    background-color: white;
+}
+
+.gbtn {
+    width: 70%;
+    background: none;
+
+}
+
+.gbtn img {
+    height: 27px;
+    vertical-align: middle;
+}
+
+
+.wd {
+    width: 90%;
+}
+
+body {
+    background-color: #FFE6C9;
+    height: 100vh;
+    margin: 0;
+}
+
+.flip-card-container {
+    perspective: 1000px;
+    width: 100%;
+    min-height: 400px;
+    position: relative;
+}
+
+.flip-card {
+    position: relative;
+    width: 100%;
+    transition: transform 0.8s ease;
+    transform-style: preserve-3d;
+    min-height: 400px;
+}
+
+.flip-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    top: 0;
+    left: 0;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+
+.lbtn {
+    background-color: #7F265B;
+    color: white;
+    border-radius: 5px;
+    height: 2.3rem;
+    width: 100%;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+.error-border {
+    border: 1px solid red !important;
+}
+
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+}
+
+.translate-x-full {
+    transform: translateX(200%);
+}
+
+.toast-notification.success {
+    background-color: #28a745;
+}

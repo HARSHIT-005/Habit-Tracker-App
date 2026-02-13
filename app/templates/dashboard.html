@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HabitFlow - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#6b7280'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+
+    <!-- Navigation Header -->
+    <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold text-gray-900 dark:text-white">HabitFlow</h1>
+                    <span
+                        class="hidden sm:inline-flex px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded border border-gray-200 dark:border-gray-600">Dashboard</span>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle"
+                        class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+                    <form action="/profile" method="post">
+                        <button type="submit"
+                            class="hidden sm:flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                    </form>
+                    <form   id="logoutform">
+                        <button type="submit"
+                            class="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Header -->
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                        Welcome back, <span id="username"></span>! 👋
+                    </h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300">
+                        Ready to build great habits today?
+                    </p>
+                </div>
+
+                <div class="mt-4 sm:mt-0">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Consistency Score</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white" id="consistencyScore">
+                               </p>
+                        </div>
+                        <div class="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center"
+                            id="consistencyIcon">
+                            <i class="fas fa-chart-line text-white text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Motivational Quote -->
+            <div
+                class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border border-blue-200 dark:border-gray-700 rounded-lg p-4">
+                <p class="text-center italic text-gray-700 dark:text-gray-300" id="motivationalQuote">
+                    Small progress is still progress. Keep going! 💪
+                </p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Habits Section -->
+            <div class="lg:col-span-2">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Today's Habits</h3>
+                    <button id="addHabitBtn"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Habit</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="habitsGrid">
+                    <!-- Habit cards will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Goals Section -->
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Your Goals</h3>
+                    <button
+                        class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-lg flex items-center space-x-2 transition-colors">
+                        <i class="fas fa-bullseye"></i>
+                        <span>Add Goal</span>
+                    </button>
+                </div>
+
+                <div class="space-y-4" id="goalsContainer">
+                    <!-- Goal cards will be populated by JavaScript -->
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="mt-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Stats</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-300">Habits Completed Today</span>
+                            <span class="font-semibold text-gray-900 dark:text-white" id="completedHabits">2/4</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-300">Active Goals</span>
+                            <span class="font-semibold text-gray-900 dark:text-white" id="activeGoals">3</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-300">Best Streak</span>
+                            <span class="font-semibold text-gray-900 dark:text-white" id="bestStreak">21 days 🏆</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Habit Modal -->
+    <div id="addHabitModal" class="fixed inset-0 z-50 hidden">
+        <!-- Modal backdrop -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+
+        <!-- Modal content -->
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md transform transition-all">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Add New Habit</h3>
+                    <button id="closeModalBtn"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Modal body -->
+                <form id="addHabitForm" class="p-6">
+                    <div class="space-y-4">
+                        <!-- Habit Title -->
+                        <div>
+                            <label for="habitTitle"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Habit Title *
+                            </label>
+                            <input type="text" id="habitTitle" name="habitTitle" required
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                                placeholder="e.g., Drink 8 glasses of water">
+                        </div>
+
+                        <!-- Category -->
+                        <div>
+                            <label for="habitCategory"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Category *
+                            </label>
+                            <select id="habitCategory" name="habitCategory" required
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                                <option value="">Select a category</option>
+                                <option value="Health">Health</option>
+                                <option value="Fitness">Fitness</option>
+                                <option value="Learning">Learning</option>
+                                <option value="Wellness">Wellness</option>
+                                <option value="Productivity">Productivity</option>
+                                <option value="Social">Social</option>
+                                <option value="Creative">Creative</option>
+                            </select>
+                        </div>
+
+                        <!-- Frequency -->
+                        <div>
+                            <label for="habitFrequency"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Frequency *
+                            </label>
+                            <select id="habitFrequency" name="habitFrequency" required
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                                <option value="">Select frequency</option>
+                                <option value="daily">daily</option>
+                                <option value="weekly">weekly</option>
+                                <option value="monthly">monthly</option>
+
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <button type="button" id="cancelBtn"
+                            class="px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                            Add Habit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Toast Notification (Hidden by default) -->
+    <div id="toast"
+        class="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300">
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage">Great job! 🎉</span>
+        </div>
+    </div>
+    <script type="module" src="{{url_for('static',filename='js/home.js')}}"></script>
+</body>
+
+</html>

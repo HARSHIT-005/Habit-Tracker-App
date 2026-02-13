@@ -1,0 +1,144 @@
+user_schema={
+    "validator":{
+        "$jsonSchema":{
+            "bsonType":"object",
+            "required":["username","password","email","dob"],
+            "properties":{
+                "username":{
+                    "bsonType":"string",
+                    "minLength":3
+                },
+                "password":{
+                    "bsonType":"string",
+                    "minLength":6
+                },
+                "email":{
+                    "bsonType":"string",
+                    "pattern":"^.+@.+$"
+                },
+                "dob":{
+                    "bsonType":"date"
+                },
+                "consistency_score":{
+                    "bsonType":["int","double"],
+                    "minimum":0
+                }
+            }
+        }
+    }
+}
+
+habit_schema={
+    "validator":{
+        "$jsonSchema":{
+            "bsonType":"object",
+            "required":["title","user_id"],
+            "properties":{
+                "title":{
+                    "bsonType":"string"
+                },
+                "goal_id":{
+                    "bsonType":"objectId"
+                },
+                "user_id":{
+                    "bsonType":"objectId"  
+
+                },
+                "frequency":{
+                    "bsonType":"string",
+                    "enum":["daily","weekly","monthly"]
+                },
+                "completed_today":{
+                    "bsonType":"bool"
+                },
+                
+                "streak":{
+                    "bsonType":"int"
+                },
+                "last_completed_date":{
+                    "bsonType":["date","null"]
+                },
+                "category":{
+                    "bsonType":"string",
+                    "enum":["Health","Fitness","Learning","Wellness","Productivity","Social","Creative"]
+                }
+            }
+        }
+    }
+}
+
+progress_schema={
+    "validator":{
+        "$jsonSchema":{
+            "bsonType":"object",
+            "required":["habit_id","user_id","status","completed_at"],
+            "properties":{
+                "habit_id":{
+                    "bsonType":"objectId"
+                },
+                "user_id":{
+                    "bsonType":"objectId"
+                },
+                "status":{
+                    "bsonType":"bool"
+                },
+                "completed_at":{
+                    "bsonType":"date"
+                }
+            }
+        }
+    }
+}
+
+goal_schema={
+    "validator":{
+        "$jsonSchema":{
+            "bsonType":"object",
+            "required":["user_id","title"],
+            "properties":{
+                "user_id":{
+                    "bsonType":"objectId"
+                },
+                "title":{
+                    "bsonType":"string"
+                },
+                "current_streak":{
+                    "bsonType":"int",
+                    "minimum":0    
+                },
+                "completion_percentage":{
+                    "bsonType":"int"
+                },
+                "target_days":{
+                    "bsonType":"int",
+                    "minimum":1
+                },
+                "habit_id":{
+                    "bsonType":"objectId"
+                }
+            }
+        }
+    }
+}
+
+habit_input_schema={
+    "validator":{
+        "$jsonSchema":{
+            "bsonType":"object",
+            "required":["title","frequency","category"],
+            "properties":{
+                "title":{
+                    "bsonType":"string"
+                },
+                "frequency":{
+                    "bsonType":"string",
+                    "enum":["daily","weekly","monthly"]
+                },
+                "category":{
+                    "bsonType":"string",
+                    "enum":["Health","Fitness","Learning","Wellness","Productivity","Social","Creative"]
+                }
+            }
+        }
+    }
+}
