@@ -1,15 +1,12 @@
 import { updateStats, closeModal, showToast, getCategoryColor } from './home.js'
+import { apiFetch } from './api.js';
 
 export let habits = [];
 
 async function fetchHabits() {
     try {
-        const token = localStorage.getItem('token')
-        const res = await fetch('/api/habits', {
+        const res = await apiFetch('/api/habits', {
             method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
         });
         if (!res.ok) throw new Error("failed to fetch habits")
         habits = await res.json();
@@ -69,12 +66,10 @@ async function toggleHabit(habitId) {
             habit.streak--;
         }
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`/api/habits/${habitId}`, {
+            const response = await apiFetch(`/api/habits/${habitId}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     "completed_today": habit.completed_today,
@@ -107,12 +102,10 @@ async function handleAddHabit(e) {
     };
     // Add to habits array
     try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('/api/add_habit', {
+        const response = await apiFetch('/api/add_habit', {
             method: 'POST',
             headers: {
-                "Content-Type": 'application/json',
-                'Authorization': `Bearer ${token}`
+            "Content-Type": 'application/json'
             },
             body: JSON.stringify(newHabit)
         });
@@ -137,12 +130,10 @@ async function handleAddHabit(e) {
 
 async function deletehabit(habitid) {
     try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`api/deletehabit/${habitid}`, {
+        const response = await apiFetch(`api/deletehabit/${habitid}`, {
             method: "DELETE",
             headers: {
-                "Content-Type": 'application/json',
-                'Authorization': `Bearer ${token}`
+            "Content-Type": 'application/json'
             }
         })
     }
