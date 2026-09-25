@@ -1,4 +1,5 @@
 import { fetchHabits, handleAddHabit, habits } from './habits.js';
+import { apiFetch, logout } from './api.js';
 
 let goals = [];
 
@@ -10,16 +11,15 @@ const motivationalQuotes = [
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', async function () {
-    const token = localStorage.getItem("token")
-    if (!token) window.location.href = '/login'
-    const response = await fetch("/api/home", {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
+    const token = localStorage.getItem('access_token')
+    if (!token) {
+        window.location.href = '/';
+        return;
+    }
+    const response = await apiFetch("/api/home");
     const data = await response.json();
     if (!response.ok) {
-        return window.location.href = '/login'
+        return window.location.href = '/'
     }
     document.getElementById('username').innerText = data.username;
     document.getElementById('consistencyScore').innerText = data.consistency_score;
@@ -101,10 +101,8 @@ function getCategoryColor(category) {
 
 async function fetch_goals() {
     try {
-        const token = localStorage.getItem('token')
-        const res = await fetch('/api/goals', {
+        const res = await apiFetch('/api/goals', {
             method: "GET",
-            headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!res.ok) throw new Error("failed to fetch goals")
         goals = await res.json();
@@ -192,8 +190,9 @@ function closeModal() {
 
 document.getElementById('logoutform').addEventListener('submit', (e) => {
     e.preventDefault();
-    localStorage.removeItem('token');
-    window.location.href = '/'
+    logout().finally(() => {
+        window.location.href = '/';
+    });
 })
 
 export { closeModal, openModal, showToast, updateStats, getCategoryColor };

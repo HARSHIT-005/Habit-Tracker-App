@@ -16,12 +16,7 @@ goals_list=db["goals"]
 
 def create_collection_with_schema(db,name,schema):
     if name in db.list_collection_names():
-        db.command({
-            'collMod':name,
-            'validator':schema['validator'],
-            'validationLevel':'strict'
-        })
-        print(f"`{name}` collection already exists and is updated")
+        print(f"`{name}` collection already exists and was left unchanged")
        
     else:
         db.create_collection(name,validator=schema["validator"])

@@ -2,20 +2,30 @@ import jwt
 from flask import jsonify,request
 from datetime import datetime,timedelta,timezone
 from functools import wraps
+import os
 
-SECRET_KEY='es mi key de secreta'
+SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'dev_jwt_secret_key')
+ACCESS_TOKEN_MINUTES = 15
+REFRESH_TOKEN_DAYS = 7
 
-def generate_token(user_id):
+def generate_token(user_id, token_type='access'):
+    lifetime = timedelta(minutes=ACCESS_TOKEN_MINUTES)
+    if token_type == 'refresh':
+        lifetime = timedelta(days=REFRESH_TOKEN_DAYS)
+
     payload={
         'user_id':str(user_id),
-        'exp':datetime.now(timezone.utc)+timedelta(days=1)
+        'type': token_type,
+        'exp':datetime.now(timezone.utc)+lifetime
     }
     token=jwt.encode(payload,SECRET_KEY,algorithm='HS256')
     return token
 
-def verify_token(token):
+def verify_token(token, expected_type='access'):
     try:
         payload=jwt.decode(token,SECRET_KEY,algorithms='HS256')
+        if payload.get('type') != expected_type:
+            return None
         return payload['user_id']
     except jwt.ExpiredSignatureError:
         return None

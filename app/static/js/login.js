@@ -40,7 +40,7 @@ signinform.addEventListener('submit', async (e) => {
                 signinform.classList.remove('shake');
             }, 500);
         } else {
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('access_token', data.access_token);
             window.location.href = '/home';
         }
     } catch (error) {
@@ -61,7 +61,7 @@ signupform.addEventListener('submit', async (e) => {
         if (response.ok) {
             const data = await response.json();
             showToast("Signup Successful", "Redirecting to home...", "success");
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('access_token', data.access_token);
             setTimeout(() => {
                 window.location.href = '/home';
             }, 1000);
