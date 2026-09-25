@@ -1,4 +1,5 @@
 let accessToken = localStorage.getItem('access_token');
+let refreshPromise = null;
 
 export function setAccessToken(token) {
     accessToken = token;
@@ -10,19 +11,31 @@ export function setAccessToken(token) {
 }
 
 async function refreshAccessToken() {
-    const response = await fetch('/refresh', {
-        method: 'POST',
-        credentials: 'same-origin'
-    });
+    if (!refreshPromise) {
+        refreshPromise = fetch('/refresh', {
+            method: 'POST',
+            credentials: 'same-origin'
+        })
+            .then(async response => {
+                if (!response.ok) {
+                    setAccessToken(null);
+                    return false;
+                }
 
-    if (!response.ok) {
-        setAccessToken(null);
-        return false;
+                const data = await response.json();
+                setAccessToken(data.access_token);
+                return true;
+            })
+            .catch(() => {
+                setAccessToken(null);
+                return false;
+            })
+            .finally(() => {
+                refreshPromise = null;
+            });
     }
 
-    const data = await response.json();
-    setAccessToken(data.access_token);
-    return true;
+    return refreshPromise;
 }
 
 export async function apiFetch(url, options = {}, hasRetried = false) {
